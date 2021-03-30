@@ -8,11 +8,12 @@ swimmer_arrows(
   df_arrows,
   id = "id",
   arrow_start = "end",
-  name_col = NULL,
   cont = NULL,
+  adj.y = 0,
+  name_col = NULL,
   arrow_positions = c(0.1, 1),
   angle = 30,
-  length = ggplot2::unit(0.1, "inches"),
+  length = 0.1,
   type = "closed",
   ...
 )
@@ -24,10 +25,12 @@ swimmer_arrows(
 
 \item{arrow_start}{column name with the arrow locations default is "end"}
 
-\item{name_col}{a column name to map the arrow colour}
-
 \item{cont}{a column name including an indicator of which ids have an arrow (NA is no arrow); when  NULL will use
 all use all of df_arrows}
+
+\item{adj.y}{amount to adjust the line within the box vertically (default is 0, line is in the centre of each bar)}
+
+\item{name_col}{a column name to map the arrow colour}
 
 \item{arrow_positions}{a vector of the distance from the arrow start to end,
 default is c(0.1,1)}
@@ -37,7 +40,7 @@ narrower, pointier arrows). Essentially describes the width of the arrow
 head. Default is 30}
 
 \item{length}{a unit specifying the length of the arrow head (from tip to
-base).Default is 'unit(0.1, "inches")'}
+base in inches (default is 0.1)'}
 
 \item{type}{one of "open" or "closed" indicating whether the arrow head
 should be a closed triangle. Default is 'closed'}
@@ -117,5 +120,5 @@ c('Response_start','Response_end'),labels=c('Response Start','Response End'))
 
 }
 \seealso{
-\code{\link{swimmer_plot}} \code{\link{swimmer_points}} \code{\link{swimmer_lines}}  \code{\link{swimmer_lines}}  \code{\link{swimmer_points_from_lines}}
+\code{\link{swimmer_plot}} \code{\link{swimmer_points}} \code{\link{swimmer_lines}}  \code{\link{swimmer_lines}}  \code{\link{swimmer_points_from_lines}}  \code{\link{swimmer_text}}
 }

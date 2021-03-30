@@ -24,7 +24,7 @@ arm_plot
 
 ## ---- echo = TRUE,fig.align='centre'------------------------------------------
 swim_plot_stratify <-swimmer_plot(df=ClinicalTrial.Arm,id='id',end='End_trt',name_fill='Arm',
-id_order ='increasing',col="black",alpha=0.75,width=.8,base_size = 14,stratify= c('Age','Sex'))
+col="black",alpha=0.75,width=.8,base_size = 14,stratify= c('Age','Sex'))
 
 swim_plot_stratify
 
@@ -79,15 +79,15 @@ Response_plot_with_points
 
 ## ----col1 , echo=T,warnings=FALSE,message=FALSE-------------------------------
 AE_plot <-  AE_plot +
-  scale_fill_manual(name="Treatment",values=c("#e41a1c", "#377eb8",'#4daf4a'))+
-  scale_color_manual(name="Treatment",values=c("#e41a1c", "#377eb8",'#4daf4a')) +
-  scale_shape_manual(name="Adverse event",values=c(21,24,17),breaks=c('AE','SAE','Death'))
+  scale_fill_manual(name="Treatment",values=c("Arm A" = "#e41a1c", "Arm B"="#377eb8","Off Treatment"='#4daf4a'))+
+  scale_color_manual(name="Treatment",values=c("Arm A"="#e41a1c", "Arm B" ="#377eb8","Off Treatment"='#4daf4a')) +
+  scale_shape_manual(name="Adverse event",values=c(AE=21,SAE=24,Death=17),breaks=c('AE','SAE','Death'))
 
 AE_plot
 
 ## ----col2 , echo=T,warnings=F,warnings=FALSE,warnings=FALSE,message=FALSE-----
 Response_plot_with_points <- Response_plot_with_points +
-  scale_fill_manual(name="Treatment",values=c("#e41a1c", "#377eb8",'#4daf4a'))+
+  scale_fill_manual(name="Treatment",values=c("Arm A" ="#e41a1c", "Arm B"="#377eb8","Off Treatment"='#4daf4a'))+
   scale_color_manual(name="Response",values=c("grey20","grey80"))+
   scale_shape_manual(name='',values=c(17,15),breaks=c('Response_start','Response_end'),
                      labels=c('Response start','Response end'))
@@ -109,13 +109,6 @@ Response_plot_with_points <- Response_plot_with_points+
 Response_plot_with_points
 
 
-## ----axis, echo=T, message=FALSE, warning=FALSE-------------------------------
-
-Response_plot_with_points <- Response_plot_with_points + theme(axis.title.y=element_blank(),
-                                                  axis.text.y=element_blank(),
-                                                  axis.ticks.y=element_blank()) +labs(y="Time since enrollment (months)") 
-Response_plot_with_points
-
 ## ----axis2 , echo=T,warnings=FALSE,messgages=FALSE----------------------------
 
 Response_plot_with_points +  scale_y_continuous(name = "Time since enrollment (months)",breaks = seq(0,18,by=3))
@@ -129,18 +122,46 @@ p1 <- arm_plot + swimmer_points(df_points=ClinicalTrial.AE,id='id',time='time',n
   scale_shape_manual(values=c(21,22,23),breaks=c('AE','SAE','Death'))
   
 
-p1 +scale_fill_manual(name="Treatment",values=c('grey40',"#e41a1c", "#377eb8",1,'#4daf4a','grey90'))
+p1 +scale_fill_manual(name="Treatment",values=c("AE"='grey90',"SAE" ="grey40","Death" =1,"Arm A"="#e41a1c", "Arm B" ="#377eb8","Off Treatment"="#4daf4a"))
 
 ## ----Legend with multiple2 , echo=T,warnings=FALSE,messgages=FALSE------------
 #First step is to correct the fill legend 
 
-p2 <- p1 + scale_fill_manual(name="Treatment",values=c('grey40',"#e41a1c", "#377eb8",1,'#4daf4a','grey90'),breaks = c("Arm A","Arm B","Off Treatment"))
+p2 <- p1 + scale_fill_manual(name="Treatment",values=c("AE"='grey90',"SAE" ="grey40","Death" =1,"Arm A"="#e41a1c", "Arm B" ="#377eb8","Off Treatment"="#4daf4a"),breaks = c("Arm A","Arm B","Off Treatment"))
 p2
 ##Then use guides to add the colours to the 
 
 #Setting the colours of the filled points to match the AE type 
-p2 + guides(shape = guide_legend(override.aes = list(fill=c('grey40','grey90',1))),fill = guide_legend(override.aes = list(shape = NA))) 
+p2 + guides(shape = guide_legend(override.aes = list(fill=c('grey90','grey40',1))),fill = guide_legend(override.aes = list(shape = NA))) 
 
+
+## ---- echo=T,warnings=FALSE,messgages=FALSE-----------------------------------
+
+Gap_data <- data.frame(patient_ID=c('ID:3','ID:1','ID:1','ID:1','ID:2',
+                                    'ID:2','ID:2','ID:3','ID:3'),
+                       start=c(10,1,2,7,2,10,14,5,0),
+                       end=c(20,2,4,10,7,14,22,7,3),
+                       treatment=c("A","B","C","A","A","C","A","B","C"))
+
+knitr::kable(Gap_data)
+
+
+## ---- echo=T,warnings=FALSE,messgages=FALSE-----------------------------------
+
+swimmer_plot(df=Gap_data,id='patient_ID',name_fill="treatment",col=1,
+id_order = c('ID:1','ID:2','ID:3')) +theme_bw()
+
+## ---- echo=T,warnings=FALSE,messgages=FALSE-----------------------------------
+
+Gap_data <- rbind(Gap_data,data.frame(patient_ID='ID:2',start=22,end=26,treatment=NA))
+knitr::kable(Gap_data)
+
+## ---- echo=T,warnings=FALSE,messgages=FALSE-----------------------------------
+swimmer_plot(df=Gap_data,id='patient_ID',name_fill="treatment",col=1,
+id_order = c('ID:1','ID:2','ID:3')) +
+ggplot2::theme_bw()+ggplot2::scale_fill_manual(name="Treatment",
+ values=c("A"="#e41a1c", "B"="#377eb8","C"="#4daf4a",na.value=NA),breaks=c("A","B","C"))+
+  ggplot2::scale_y_continuous(breaks=c(0:26))
 
 ## ---- echo=T,warnings=FALSE,messgages=FALSE-----------------------------------
 

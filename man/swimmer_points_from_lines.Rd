@@ -10,6 +10,7 @@ swimmer_points_from_lines(
   start = "start",
   end = "end",
   cont = NULL,
+  adj.y = 0,
   name_shape = "type",
   name_col = NULL,
   name_size = NULL,
@@ -29,6 +30,8 @@ swimmer_points_from_lines(
 \item{end}{column name where the line ends, default is 'end'}
 
 \item{cont}{a column name of which lines continue (NA is does not continue) these will not have a point at the end of the line}
+
+\item{adj.y}{amount to adjust the point within the box vertically (default is 0, point is in the centre of each bar)}
 
 \item{name_shape}{a column name to map the point shape}
 
@@ -85,5 +88,5 @@ ggplot2::scale_shape_manual(name='',values=c(17,15),breaks =
 c('Response_start','Response_end'),labels=c('Response Start','Response End'))
 }
 \seealso{
-\code{\link{swimmer_plot}} \code{\link{swimmer_points}} \code{\link{swimmer_lines}}  \code{\link{swimmer_lines}}  \code{\link{swimmer_arrows}}
+\code{\link{swimmer_plot}} \code{\link{swimmer_points}} \code{\link{swimmer_lines}}  \code{\link{swimmer_lines}}  \code{\link{swimmer_arrows}} \code{\link{swimmer_text}}
 }
